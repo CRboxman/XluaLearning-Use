@@ -1,9 +1,13 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Security.Cryptography;
 using UnityEngine;
 
 public class ABTest 
 {
+    public string mainBundleName = "LessonOne"; // 主包的名字
+
+
     private static ABTest instance = new ABTest();
     public static ABTest Instance
     {
@@ -32,18 +36,29 @@ public class ABTest
         //包为空才添加       主包
         if (bundle == null)
         {
-            bundle=AssetBundle.LoadFromFile(StrPath+ "First");
+            bundle = AssetBundle.LoadFromFile(StrPath + mainBundleName);
+            if (bundle == null)
+            {
+                Debug.Log("主包未找到，请检查名称或者修改mainBundleName");
+                return null;
+            }
         }
         //加载这个主包的      固定文件，用于下面获取依赖
-        manifest=bundle.LoadAsset<AssetBundleManifest>("AssetBundleManifest");
+        manifest = bundle.LoadAsset<AssetBundleManifest>("AssetBundleManifest");
+
         string[] str = manifest.GetAllDependencies(ABbao);
-        AssetBundle ab=null;
+        AssetBundle ab = null;
         for (int i = 0; i < str.Length; i++)
         {
             //检查是否加载了相关     依赖包     ，没有则添加到这个字典，防止重复
             if (!ABDic.ContainsKey(str[i]))
             {
-                 ab=AssetBundle.LoadFromFile(StrPath + str[i]);
+                ab = AssetBundle.LoadFromFile(StrPath + str[i]);
+                if (ab == null)
+                {
+                    Debug.Log("依赖包加载失败：" + str[i] + "\n" + "\t未找到相关依赖包，请检查ab包/主包的包名是否正确");
+                    continue;
+                }
                 ABDic.Add(str[i], ab);
             }
         }
@@ -51,6 +66,11 @@ public class ABTest
         if (!ABDic.ContainsKey(ABbao))
         {
             ab = AssetBundle.LoadFromFile(StrPath + ABbao);
+            if (ab == null)
+            {
+                Debug.Log("主资源包加载失败：" + ABbao + "\n" + "\t请检查ab包/主包的包名是否正确");
+                return null;
+            }
             ABDic.Add(ABbao, ab);
         }
         return ABDic[ABbao].LoadAsset(WenJian);
@@ -67,7 +87,12 @@ public class ABTest
         //包为空才添加       主包
         if (bundle == null)
         {
-            bundle = AssetBundle.LoadFromFile(StrPath + "First");
+            bundle = AssetBundle.LoadFromFile(StrPath + mainBundleName);
+            if (bundle == null)
+            {
+                Debug.Log("主包未找到，请检查名称或者修改mainBundleName");
+                return null;
+            }
         }
         //加载这个主包的      固定文件，用于下面获取依赖
         manifest = bundle.LoadAsset<AssetBundleManifest>("AssetBundleManifest");
@@ -79,6 +104,11 @@ public class ABTest
             if (!ABDic.ContainsKey(str[i]))
             {
                 ab = AssetBundle.LoadFromFile(StrPath + str[i]);
+                if (ab == null)
+                {
+                    Debug.Log("依赖包加载失败：" + str[i] + "\n" + "\t未找到相关依赖包，请检查ab包/主包的包名是否正确");
+                    continue;
+                }
                 ABDic.Add(str[i], ab);
             }
         }
@@ -86,6 +116,11 @@ public class ABTest
         if (!ABDic.ContainsKey(ABbao))
         {
             ab = AssetBundle.LoadFromFile(StrPath + ABbao);
+            if (ab == null)
+            {
+                Debug.Log("主资源包加载失败：" + ABbao + "\n" + "\t请检查ab包/主包的包名是否正确");
+                return null;
+            }
             ABDic.Add(ABbao, ab);
         }
         return ABDic[ABbao].LoadAsset(WenJian,type);
@@ -102,7 +137,12 @@ public class ABTest
         //包为空才添加       主包
         if (bundle == null)
         {
-            bundle = AssetBundle.LoadFromFile(StrPath + "First");
+            bundle = AssetBundle.LoadFromFile(StrPath + mainBundleName);
+            if (bundle == null)
+            {
+                Debug.Log("主包未找到，请检查名称或者修改mainBundleName");
+                return null;
+            }
         }
         //加载这个主包的      固定文件，用于下面获取依赖
         manifest = bundle.LoadAsset<AssetBundleManifest>("AssetBundleManifest");
@@ -114,6 +154,11 @@ public class ABTest
             if (!ABDic.ContainsKey(str[i]))
             {
                 ab = AssetBundle.LoadFromFile(StrPath + str[i]);
+                if (ab == null)
+                {
+                    Debug.Log("依赖包加载失败：" + str[i]+"\n"+ "\t未找到相关依赖包，请检查ab包/主包的包名是否正确");
+                    continue;
+                }
                 ABDic.Add(str[i], ab);
             }
         }
@@ -121,9 +166,20 @@ public class ABTest
         if (!ABDic.ContainsKey(ABbao))
         {
             ab = AssetBundle.LoadFromFile(StrPath + ABbao);
+            if (ab == null)
+            {
+                Debug.Log("主资源包加载失败：" + ABbao+ "\n"+"\t请检查ab包/主包的包名是否正确");
+                return null;
+            }
             ABDic.Add(ABbao, ab);
         }
-        return ABDic[ABbao].LoadAsset<T>(WenJian);
+        T asset = ABDic[ABbao].LoadAsset<T>(WenJian);
+        if (asset == null)
+        {
+            Debug.Log("资源不存在：" + WenJian+"\n"+"\t请检查资源名称是否正确");
+        }
+
+        return asset;
     }
     public void RemoveRes(string ABbao)
     {
