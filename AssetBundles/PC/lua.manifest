@@ -1,19 +1,17 @@
 ManifestFileVersion: 0
-CRC: 475538713
+CRC: 1772852192
 Hashes:
   AssetFileHash:
     serializedVersion: 2
-    Hash: 67f9332463eabfb90a738ee8d44aacc5
+    Hash: bd9b434b78522f3243459410c6248dce
   TypeTreeHash:
     serializedVersion: 2
-    Hash: 27295f96fcdc2b917bd061e8817c7e02
+    Hash: 5ad585dd02dfb5016c0dad519eab8f49
 HashAppended: 0
 ClassTypes:
-- Class: 1
-  Script: {instanceID: 0}
-- Class: 4
+- Class: 49
   Script: {instanceID: 0}
 SerializeReferenceClassIdentifiers: []
 Assets:
-- Assets/GameObject.prefab
+- Assets/Lua/LuaMain.lua.txt
 Dependencies: []

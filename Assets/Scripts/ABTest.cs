@@ -5,7 +5,7 @@ using UnityEngine;
 
 public class ABTest 
 {
-    public string mainBundleName = "LessonOne"; // 主包的名字
+    public string mainBundleName = "PC"; // 主包的名字
 
 
     private static ABTest instance = new ABTest();
@@ -162,7 +162,7 @@ public class ABTest
                 ABDic.Add(str[i], ab);
             }
         }
-        //检测是否加载了主包
+        //检测是否加载了主ab包
         if (!ABDic.ContainsKey(ABbao))
         {
             ab = AssetBundle.LoadFromFile(StrPath + ABbao);
