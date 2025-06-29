@@ -7,6 +7,25 @@ using XLua;
 public class LuaMgr : BaseManager<LuaMgr>
 {
     private LuaEnv luaEnv;
+    public LuaTable Global
+    {
+        get
+        {
+            return luaEnv.Global;
+        }
+    }
+    /// <summary>
+    /// 加载Lua文件
+    /// </summary>
+    /// <param name="filename"></param>
+    public void DoLuaFile(string filename)
+    {
+        string str = string.Format("require('{0}')", filename);
+        DoString(str);
+    }
+    /// <summary>
+    /// 初始化Lua环境，并添加自定义的Lua重定向加载器
+    /// </summary>
     public void Init()
     {
         if (luaEnv != null)
@@ -17,7 +36,7 @@ public class LuaMgr : BaseManager<LuaMgr>
     }
     /// <summary>
     /// 重定向asset文件夹下的lua文件的加载方式
-    /// 
+    /// 不需要改后缀
     /// </summary>
     /// <param name="filepath"></param>
     /// <returns></returns>
@@ -38,6 +57,7 @@ public class LuaMgr : BaseManager<LuaMgr>
     }
     /// <summary>
     /// 重定向AssetBundle文件夹下的lua文件的加载方式
+    /// 需要改为txt后缀
     /// </summary>
     /// <param name="filepath"></param>
     /// <returns></returns>
