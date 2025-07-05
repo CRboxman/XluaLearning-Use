@@ -4,6 +4,9 @@ using System.IO;
 using UnityEngine;
 using XLua;
 
+
+
+//MyLoaderAB 那里改ab包名
 public class LuaMgr : BaseManager<LuaMgr>
 {
     private LuaEnv luaEnv;
@@ -14,6 +17,10 @@ public class LuaMgr : BaseManager<LuaMgr>
             return luaEnv.Global;
         }
     }
+
+    private string LuaAssetPath_No_txt= "/"+"Lua/"; // Lua文件的路径，注意这里是相对于Assets目录的路径
+    private string ABbaoName_txt = "lua";        // // AB包的名字
+
     /// <summary>
     /// 加载Lua文件
     /// </summary>
@@ -42,7 +49,7 @@ public class LuaMgr : BaseManager<LuaMgr>
     /// <returns></returns>
     private byte[] MyLoader(ref string filepath)
     {
-        string path = Application.dataPath + "/Lua/" + filepath + ".lua";
+        string path = Application.dataPath + LuaAssetPath_No_txt + filepath + ".lua";   
         //Debug.Log(path);//  具体的文件的路径
         //Debug.Log(filepath);//    require的文件名
         if (File.Exists(path))
@@ -56,7 +63,7 @@ public class LuaMgr : BaseManager<LuaMgr>
         return null;
     }
     /// <summary>
-    /// 重定向AssetBundle文件夹下的lua文件的加载方式
+    /// 重定向AssetBundle文件夹下的lua文件的加载方式，需要加txt后缀！！！！！！！！
     /// 需要改为txt后缀
     /// </summary>
     /// <param name="filepath"></param>
@@ -71,7 +78,7 @@ public class LuaMgr : BaseManager<LuaMgr>
         //return textAsset.bytes;
         #endregion
         #region 使用自己写的AB包管理器
-        TextAsset luaTextAsset = ABTest.Instance.LoadRes<TextAsset>("lua", filepath + ".lua");
+        TextAsset luaTextAsset = ABTest.Instance.LoadRes<TextAsset>(ABbaoName_txt, filepath + ".lua");///需要更改ab包名！！！！！！！
         if (luaTextAsset != null)
             return luaTextAsset.bytes;
         else
